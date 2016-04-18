@@ -674,7 +674,7 @@ def create_db_instance(module, conn):
     else:
         valid_vars.append('security_groups')
     if has_rds2:
-        valid_vars.extend(['publicly_accessible', 'tags'])
+        valid_vars.extend(['publicly_accessible', 'tags', 'kms_key_id', 'storage_encrypted'])
     params = validate_parameters(required_vars, valid_vars, module)
     instance_name = module.params.get('instance_name')
 
@@ -978,6 +978,8 @@ def validate_parameters(required_vars, valid_vars, module):
             'password': 'master_user_password',
             'new_instance_name': 'new_db_instance_identifier',
             'force_failover': 'force_failover',
+            'kms_key_id': 'kms_key_id',
+            'storage_encrypted': 'storage_encrypted'
     }
     if has_rds2:
         optional_params.update(optional_params_rds2)
@@ -1052,7 +1054,9 @@ def main():
             tags              = dict(type='dict', required=False),
             publicly_accessible = dict(required=False),
             character_set_name = dict(required=False),
-            force_failover    = dict(type='bool', required=False, default=False)
+            force_failover    = dict(type='bool', required=False, default=False),
+            kms_key_id        = dict(required=False),
+            storage_encrypted = dict(required=False)
         )
     )
 
